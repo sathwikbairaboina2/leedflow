@@ -715,15 +715,15 @@ def transliterate_all(name: str, country: ScandinavianCountry) -> List[str]:
 
 
 def print_variants(variants: List[str]):
-
+    print(", ".join(variants))
 
 
 def transliterate_names(fullname: str, country_name: ScandinavianCountry, fuzzy: bool):
-
+    print(f"Input name: {fullname}")
     try:
         country = ScandinavianCountry[country_name]
     except KeyError:
-      
+        print(f"Invalid country name: {country_name}. Defaulting to Norway.")
         country = ScandinavianCountry.Norway
 
     countries = [
@@ -734,7 +734,7 @@ def transliterate_names(fullname: str, country_name: ScandinavianCountry, fuzzy:
         ScandinavianCountry.FaroeIslands,
     ]
 
-
+    print(f"\n{country.name} variants for {fullname}: ", end="")
     transliterations = transliterate_all(fullname, country)
     print_variants(transliterations)
     if fuzzy:
