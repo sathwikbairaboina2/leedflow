@@ -3,6 +3,8 @@ from multiprocessing.pool import AsyncResult
 from app.handler.claude_predictions import suggest_names
 
 # from app.handler.vector_similarity_search import find_scandinavian_person
+from app.model import models, schemas
+from app.model.crud import create_ai_entry, get_all_ai_entries, update_generated_list
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
@@ -11,11 +13,6 @@ from vector1 import find_scandinavian_person
 from vector1 import celery_app
 
 router = APIRouter()
-
-
-# celery = Celery(
-#     __name__, broker="redis://127.0.0.1:6379/0", backend="redis://127.0.0.1:6379/0"
-# )
 
 
 class ScandinavianCountry(str, Enum):
@@ -49,6 +46,7 @@ async def get_predicted_names(params: NameRequest):
             params.full_name, params.country_code, params.enable_fuzzy_search
         )
         print("predicted_names", predicted_names)
+
         return NameResponse(predicted_names=predicted_names)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -70,6 +68,13 @@ async def get_predicted_names_vector(params: NameRequest):
     try:
         print("paramsqq", params)
         job = find_scandinavian_person.delay(params.full_name, params.country_code)
+        create_ai_entry(
+            schemas.AISimilaritySearchBase(
+                id=job.id,
+                fullname=params.full_name,
+                country=params.country_code.value,
+            )
+        )
         print("job", job)
         return {"job_id": job.id}
     except Exception as e:
@@ -82,9 +87,11 @@ async def get_job_results(job_id: str):
         result = celery_app.AsyncResult(job_id)
 
         if result.successful():
+            results = result.get()
+            update_generated_list(job_id, results)
             return {
                 "status": "completed",
-                "result": result.get(),  # <-- Fix here
+                "result": results,  # <-- Fix here
             }
         elif result.state == "PENDING":
             return {"status": f"Task {job_id} is pending"}
@@ -95,5 +102,13 @@ async def get_job_results(job_id: str):
             }
         else:
             return {"status": f"Task {job_id} not completed yet, state: {result.state}"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/vector_search/history")
+async def get_job_history():
+    try:
+        return get_all_ai_entries()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

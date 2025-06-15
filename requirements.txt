@@ -11,3 +11,5 @@ langchain-anthropic
 python-dotenv  
 fuzzywuzzy
 pydantic-settings 
+sqlalchemy
+python-Levenshtein
