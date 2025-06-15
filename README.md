@@ -57,4 +57,4 @@ http://localhost:8001/docs
 ]
 ```
 
-## add ANTHROPIC_API_KEY in env file to use claude predictions
+add ANTHROPIC_API_KEY in env file to use claude predictions
