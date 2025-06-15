@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  app:
+    image: leedflow
+    container_name: leedflow
+    command: python run.py
+    depends_on:
+      - redis
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379
+      - CELERY_RESULT_BACKEND=redis://redis:6379
+
+  celery:
+    image: leedflow
+    container_name: celery-worker
+    command: celery -A vector1 worker --loglevel=info --concurrency=1
+    depends_on:
+      - redis
+      - app
+    restart: unless-stopped
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379
+      - CELERY_RESULT_BACKEND=redis://redis:6379
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  redis_data:
