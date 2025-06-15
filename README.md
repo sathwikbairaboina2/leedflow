@@ -48,8 +48,6 @@ http://localhost:8001/docs
 -   **Dataset Configuration**:  
     Replace the contents of `dataset.json` with any file of your choice. For better results, use data in the following format:
 
-    add ANTHROPIC_API_KEY in env file to use claude predictions
-
 ```json
 [
     {
@@ -59,4 +57,4 @@ http://localhost:8001/docs
 ]
 ```
 
----
+## add ANTHROPIC_API_KEY in env file to use claude predictions
