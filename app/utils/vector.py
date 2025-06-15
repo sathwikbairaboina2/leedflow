@@ -37,6 +37,6 @@ def find_scandinavian_person(name: str, country: str, top_k=3):
     return results
 
 
-if __name__ == "__main__":
-    results = find_scandinavian_person("tord bsdk", "Amagerbrogade 88")
-    print(results)
+# if __name__ == "__main__":
+#     results = find_scandinavian_person("tord bsdk", "Amagerbrogade 88")
+#     print(results)

@@ -19,8 +19,6 @@ result_backend = os.environ.get("CELERY_RESULT_BACKEND", "redis://localhost:6379
 
 celery_app = Celery("worker", backend=result_backend, broker=broker_url)
 
-print("celery config", broker_url, result_backend)
-
 
 @signals.worker_process_init.connect
 def setup_model(**kwargs):
@@ -50,7 +48,7 @@ def setup_model(**kwargs):
 @celery_app.task
 def find_scandinavian_person(name: str, country: str, top_k: int = 3):
     """Celery task to find similar Scandinavian names using vector search."""
-    print("find_scandinavian_person", name, country)
+
     global model, index, data
     query = name + "," + country
     query_vec = model.encode([query], convert_to_numpy=True)

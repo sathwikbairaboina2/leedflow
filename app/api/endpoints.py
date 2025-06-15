@@ -40,12 +40,11 @@ class NameResponse(BaseModel):
 
 @router.post("/predicted_names/rule_based", response_model=NameResponse)
 async def get_predicted_names(params: NameRequest):
-    print("params", params)
+
     try:
         predicted_names = transliterate_names(
             params.full_name, params.country_code, params.enable_fuzzy_search
         )
-        print("predicted_names", predicted_names)
 
         return NameResponse(predicted_names=predicted_names)
     except Exception as e:
@@ -54,10 +53,10 @@ async def get_predicted_names(params: NameRequest):
 
 @router.post("/predicted_names/claude")
 async def get_predicted_names(params: NameRequestClaude):
-    print("params", params)
+
     try:
         predicted_names = suggest_names(params.full_name, params.country_code)
-        print("predicted_names", predicted_names)
+
         return NameResponse(predicted_names=predicted_names)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -66,7 +65,7 @@ async def get_predicted_names(params: NameRequestClaude):
 @router.post("/predicted_names/vector_search")
 async def get_predicted_names_vector(params: NameRequest):
     try:
-        print("paramsqq", params)
+
         job = find_scandinavian_person.delay(params.full_name, params.country_code)
         create_ai_entry(
             schemas.AISimilaritySearchBase(
@@ -75,7 +74,7 @@ async def get_predicted_names_vector(params: NameRequest):
                 country=params.country_code.value,
             )
         )
-        print("job", job)
+
         return {"job_id": job.id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

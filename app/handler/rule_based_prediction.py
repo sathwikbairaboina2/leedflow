@@ -715,41 +715,15 @@ def transliterate_all(name: str, country: ScandinavianCountry) -> List[str]:
 
 
 def print_variants(variants: List[str]):
-    print(", ".join(variants))
 
-
-"""
-sample validation function if we have a list of expected outputs
-def test_transliteration(input_str: str, expected: List[str], country: ScandinavianCountry) -> bool:
-    actual = transliterate_all(input_str, country)
-    expected_set = set(expected)
-    actual_set = set(actual)
-
-    pass_test = True
-    for e in expected_set:
-        if e not in actual_set:
-            print(f"FAIL: Input '{input_str}' missing expected '{e}'")
-            print("Actual outputs: ")
-            print_variants(actual)
-            pass_test = False
-
-    if pass_test:
-        print(f"PASS: Input '{input_str}' produced all expected outputs.")
-
-    for a in actual_set:
-        if a not in expected_set:
-            print(f"WARN: Input '{input_str}' produced unexpected '{a}'")
-
-    return pass_test
-"""
 
 
 def transliterate_names(fullname: str, country_name: ScandinavianCountry, fuzzy: bool):
-    print(f"Input name: {fullname}")
+
     try:
         country = ScandinavianCountry[country_name]
     except KeyError:
-        print(f"Invalid country name: {country_name}. Defaulting to Norway.")
+      
         country = ScandinavianCountry.Norway
 
     countries = [
@@ -760,7 +734,7 @@ def transliterate_names(fullname: str, country_name: ScandinavianCountry, fuzzy:
         ScandinavianCountry.FaroeIslands,
     ]
 
-    print(f"\n{country.name} variants for {fullname}: ", end="")
+
     transliterations = transliterate_all(fullname, country)
     print_variants(transliterations)
     if fuzzy:

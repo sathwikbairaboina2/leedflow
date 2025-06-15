@@ -15,14 +15,14 @@ def create_ai_entry(payload: schemas.AISimilaritySearchBase):
             raise HTTPException(
                 status_code=400, detail="Entry with given ID already exists"
             )
-        print("payload", payload)
+
         new_entry = models.AISimilaritySearch(
             id=payload.id,
             fullname=payload.fullname,
             country=payload.country,
             generatedlist="[]",
         )
-        print("new_entry", new_entry)
+
         db.add(new_entry)
         db.commit()
         db.refresh(new_entry)

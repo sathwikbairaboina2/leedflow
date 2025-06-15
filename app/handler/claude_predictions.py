@@ -56,4 +56,3 @@ if __name__ == "__main__":
     name = "Naeik"
     country = "Norway"
     suggestions = suggest_names(name, country)
-    print(suggestions)
