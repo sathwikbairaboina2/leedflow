@@ -32,13 +32,11 @@ http://localhost:8001/docs
 
 ## 🧠 API Endpoints Summary
 
-| Method | Endpoint | Description |
-|--------|-------------------------------------------------------|----------------------------------------------| |
-| POST | `/predicted_names/vector_search` | Perform vector similarity search |
+| POST| `/predicted_names/vector_search` | Perform vector similarity search |
 | GET | `/predicted_names/vector_search/{job_id}` | Get vector search results by job ID  
- GET | `/predicted_names/vector_search/history` | Retrieve history of predictions |
-| POST | `/predicted_names/claude_predictions` | Get name suggestions from Claude AI |
-| POST | `/predicted_names/rule_based_predictions` | Get rule-based name transliterations |
+| GET | `/predicted_names/vector_search/history` | Retrieve history of predictions |
+| POST| `/predicted_names/claude_predictions` | Get name suggestions from Claude AI |
+| POST| `/predicted_names/rule_based_predictions` | Get rule-based name transliterations |
 
 ---
 
